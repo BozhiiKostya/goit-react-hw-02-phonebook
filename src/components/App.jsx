@@ -16,7 +16,11 @@ export class App extends Component {
   };
 
   addContact = newContact => {
-    if (this.state.contacts.find(contact => contact.name === newContact.name)) {
+    if (
+      this.state.contacts.find(
+        contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+      )
+    ) {
       alert(`${newContact.name} is already in contacts.`);
       return;
     }
@@ -42,9 +46,10 @@ export class App extends Component {
       };
     });
   };
-
+  changeNameFilter = contactName => {
+    this.setState({ filter: contactName });
+  };
   filterContacts = value => {
-    console.log(value);
     this.setState({
       filter: value,
     });
@@ -56,7 +61,7 @@ export class App extends Component {
         <h1>Phonebook</h1>
         <ContactsForm addContact={this.addContact} />
         <h2>Contacts</h2>
-        <Filter onFilter={this.filterContacts} />
+        <Filter onFilter={this.filterContacts} filter={this.state.filter} />
         <Contacts
           contacts={this.getFilteredContactsList()}
           onDelete={this.deleteContact}
